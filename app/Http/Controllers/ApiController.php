@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SavingSubmissionJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,6 +22,8 @@ class ApiController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
+
+        SavingSubmissionJob::dispatch($request->only('name', 'email', 'message'));
 
         return response()->json([
             'status' => 'success',
